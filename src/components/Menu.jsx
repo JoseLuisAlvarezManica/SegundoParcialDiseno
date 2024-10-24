@@ -6,15 +6,18 @@ export const Menu = () => {
     const [loading, setLoading] = useState(true);
     const [compras, setCompras] = useState([]);
     const [pago, setPago] = useState(false);
-
+    
     const AgregarCompra = (item) => {
         const newitem = {name:item.name, price:item.price}
-        setCompras((anteriores) => [...anteriores, newitem])
+        setCompras([...compras, newitem])
+        setPago(false);
     }
 
     const Pagar = () => {
-        setCompras([])
-        setPago(true)
+        if (compras.length>0) {
+            setPago(true);
+            setCompras([]);
+        }
     }
 
     useEffect(() => {
@@ -29,7 +32,6 @@ export const Menu = () => {
                 console.log('Error fetching data', error);
                 setLoading(false);
             }
-    
         }
     
         fetchData();
@@ -49,9 +51,8 @@ export const Menu = () => {
                                 <li key={index} className='bg-gray-500 p-4 rounded-lg flex flex-col justify-center items-center '>
                                     <h2 className='text-lg font-bold text-center mt-2'>{item.name} - ${item.price}</h2>
                                     <button className='border-2 shadow-lg rounded-md bg-white border-black font-bold' onClick={() => {
-                                        AgregarCompra(item);
-                                        console.log(item)
-            }}                          >Agregar</button>
+                                        AgregarCompra(item);}}                          
+                                        >Agregar</button>
                                 </li>
                             )
                         }
@@ -63,9 +64,9 @@ export const Menu = () => {
 
         <div className='bg-white shadow-lg round-lg p-6 max-w-xl w-full flex flex-col items-center'>
         <h1 className='text-2xl font-bold text-center mb-4'>Orden Actual</h1>
-        {compras.map((compra, index) => (
-            <Orden key={index} name={compra.name} precio={compra.price} />
-        ))}
+
+        <Orden compras={compras} />
+        
         <button className='border-2 shadow-lg bg-white rounded-md border-black font-bold' onClick={() => Pagar()}>
             Pagar
         </button>
@@ -73,17 +74,15 @@ export const Menu = () => {
 
         <div className='bg-white shadow-lg round-lg p-6 max-w-xl w-full'>
             <h1 className='text-2xl font-bold text-center mb-4'>Pago</h1>
-            {pago ? <div>
-                <h1 className='text-2xl font-bold text-center mb-4'>Pago realizado</h1>
-                <h1 className='text-1xl text-center mb-4'>Gracias por su compra</h1>
-                </div> :
-              <h1 className='text-2xl text-center mb-4'>Pago por realizar</h1>}
+            {(!pago) ? 
+              <h1 className='text-1xl text-center mb-4'>Pago por realizar</h1>
+            :
+            <div>
+                <h1 className='text-1xl font-bold text-center mb-2'>Pago realizado</h1>
+                <h1 className='text-1xl text-center mb-2'>Gracias por su compra</h1>
+            </div>}
               
         </div>
-    </div>
-
-
-    
-    
+    </div>    
   )
 }
