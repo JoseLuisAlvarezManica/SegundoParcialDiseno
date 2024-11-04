@@ -9,9 +9,22 @@ export const Menu = () => {
     const [pago, setPago] = useState(false);
     
     const AgregarCompra = (item) => {
-        const newitem = {name:item.name, price:item.price}
-        setCompras([...compras, newitem])
-        setPago(false);
+            
+        const existingItemIndex = compras.findIndex(compra => compra.name === item.name);
+
+        if (existingItemIndex !== -1) {
+            const updatedCompras = [...compras];
+            updatedCompras[existingItemIndex].quantity += 1;
+            setCompras(updatedCompras);
+        } else {
+            const newitem = { name: item.name, price: item.price, quantity: 1 };
+            setCompras([...compras, newitem]);
+        }
+        
+        if (pago){
+            setPago(false);
+        }
+        
     }
 
     const Pagar = () => {

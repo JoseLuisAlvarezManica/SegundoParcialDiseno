@@ -5,7 +5,7 @@ export const Orden = ({compras}) => {
 
   useEffect(() => {
     const totalAmount = compras.reduce((previousValue, currentCompra) => {
-      return previousValue + currentCompra.price;
+      return previousValue + (currentCompra.price * currentCompra.quantity);
     }, 0);
     setTotal(totalAmount);
   }, [compras]);
@@ -14,7 +14,7 @@ export const Orden = ({compras}) => {
     <div>
     {compras.map((compra, index) => (
             //<Orden key={index} compra={compra} />
-            <h2 key={index}> {compra.name} - ${compra.price}</h2>
+            <h2 key={index}> {compra.name} - ${compra.price} x {compra.quantity} = {compra.price * compra.quantity}</h2>
         ))}
     <br></br>
     <h2 className='text-1xl font-bold'> Total a pagar: ${total}</h2>

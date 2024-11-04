@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {db} from './services/firebaseConfig'
 import { Menu } from './components/Menu'
+import { Orders } from './components/Orders'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -9,6 +9,7 @@ function App() {
   return (
     <>
       <Menu />
+      <Orders />
     </>
   )
 }
