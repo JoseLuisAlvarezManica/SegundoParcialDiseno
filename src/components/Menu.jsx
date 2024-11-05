@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import { Orden } from './Orden';
 import { getMenu } from '../services/menuApi';
+import { createOrder } from '../services/orderService';
+import { Timestamp } from 'firebase/firestore';
+import { Orders } from './Orders'
+
 
 export const Menu = () => {
     const [data, setData] = useState([]);
@@ -28,7 +32,22 @@ export const Menu = () => {
     }
 
     const Pagar = () => {
+        const totalAmount = compras.reduce((previousValue, currentCompra) => {
+            return previousValue + (currentCompra.price * currentCompra.quantity);
+          }, 0);
+
         if (compras.length>0) {
+            const order = {
+                timestamp: Timestamp.now(),
+                payment: "cash",
+                total: totalAmount,
+                items: compras.map((item)=> ({
+                    name:item.name,
+                    price: item.price,
+                    quantity: item.quantity
+                }))
+            }
+            createOrder(order);
             setPago(true);
             setCompras([]);
         }
@@ -45,8 +64,11 @@ export const Menu = () => {
         })
         
       }, []); //Este hook solo se ejecutara una vez
+    
+    
 
   return (
+    <>
     <div className='min-h-screen bg-gray-400 flex grid-cols-3 items-top justify-center'>
         <div className='bg-white shadow-lg round-lg p-6 max-w-xl w-full'>
             <div className=''>
@@ -90,8 +112,10 @@ export const Menu = () => {
                 <h1 className='text-1xl font-bold text-center mb-2'>Pago realizado</h1>
                 <h1 className='text-1xl text-center mb-2'>Gracias por su compra</h1>
             </div>}
-              
         </div>
-    </div>    
+        
+    </div> 
+    <Orders />  
+    </> 
   )
 }

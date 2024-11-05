@@ -13,8 +13,21 @@ import {
 
 import {db} from "./firebaseConfig"
 
+const createOrder = async (order) => {
+    try{
+        const docRef = await addDoc(collection(db, "Orders"), order);
+        console.log("Order created with ID: ", docRef.id);
+        return docRef.id;
+    }
+    catch(e){
+        console.error("Error adding document: ", e)
+    }
+
+
+}
+
 //Read all orders
-export const getOrders = async () => {
+const getOrders = async () => {
     const querySnapShot = await getDocs(collection(db, 'Orders'));
     const datalist = querySnapShot.docs.map((doc) => ({
         id: doc.id,
@@ -23,4 +36,5 @@ export const getOrders = async () => {
     return datalist;
 }
 
+export {getOrders, createOrder}
 //Mostrar todas las Ordenes

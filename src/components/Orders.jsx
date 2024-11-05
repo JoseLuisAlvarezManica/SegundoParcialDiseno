@@ -16,13 +16,19 @@ export const Orders = () => {
             
         };
         fetchOrders();
-    }, []);
+    }, [orders]);
 
     return (
-        <div className='bg-gray-100 flex grid-cols-5 items-top justify-center space-x-1 '>
-            {orders.map((order, index) => (
-                            <div key={index} className='bg-gray-300 p-5 rounded-lg flex flex-col justify-center items-center'>
-                                <h3 className='text-xl font-bold'>Orden {index + 1}</h3>
+        <div className='bg-gray-100'>
+        <br />
+        <h1 className=' text-center font-bold text-3xl'>Historial de ventas</h1>
+        <br />
+        
+
+        <div className='bg-gray-100 grid grid-cols-5 items-top justify-center gap-x-1 gap-y-2 '>
+            {orders.map((order) => (
+                            <div key={order.id} className='bg-gray-300 p-5 rounded-lg flex flex-col justify-center items-center'>
+                                <h3 className='text-xl font-bold'>Orden: {order.id}</h3>
                                 {order.items.map((item, itemIndex) => (
                                     <p key={itemIndex}>
                                         {item.name} - ${item.price} x {item.quantity} = ${item.price * item.quantity}
@@ -34,6 +40,7 @@ export const Orders = () => {
                                 <br />
                             </div>
                         ))}
+        </div>
         </div>
     )
 }
